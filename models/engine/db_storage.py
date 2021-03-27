@@ -7,7 +7,7 @@ import models
 from models.base_model import BaseModel, Base
 from models.city import City
 from models.state import State
-from models.amenities import Amenities
+from models.amenity import Amenity
 from models.user import User
 from models.review import Review
 from models.place import Place
@@ -40,6 +40,7 @@ class DBStorage:
         HBNB_MYSQL_PWD = getenv('HBNB_MYSQL_PWD')
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
+        HBNB_ENV = getenv('HBNB_ENV')
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}/{}'.format(
                 HBNB_MYSQL_USER,
@@ -81,7 +82,7 @@ class DBStorage:
     def reload(self):
         """Magic
         """
-        Base.metadata.create_all(engine)
+        Base.metadata.create_all(self.__engine)
         sm = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sm)
         self.__session = Session()
