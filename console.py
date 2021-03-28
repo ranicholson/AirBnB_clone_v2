@@ -126,8 +126,8 @@ class HBNBCommand(cmd.Cmd):
             return
         if len(arglist) == 1:
                 new_instance = HBNBCommand.classes[arglist[0]]()
-                models.storage.save()
-                print(new_instance.id)
+                storage.new(new_instance)
+                storage.save()
         else:
             kwargs = {}
             new_instance = HBNBCommand.classes[arglist[0]]()
@@ -149,7 +149,8 @@ class HBNBCommand(cmd.Cmd):
                         pass
                 setattr(new_instance, k, v)
                 kwargs[k] = v
-            storage.save()
+            storage.new(new_instance)
+            new_instance.save()
             print(new_instance.id)
 
     def help_create(self):
