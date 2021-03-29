@@ -14,8 +14,8 @@ class FileStorage:
         if cls is None:
             return self.__objects
         all_dict = {}
-        for k, v in self.__objects.item():
-            if cls == value.__class__:
+        for k, v in self.__objects.items():
+            if cls == v.__class__:
                 all_dict[k] = v
         return all_dict
 
