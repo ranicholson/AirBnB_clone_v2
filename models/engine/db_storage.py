@@ -50,11 +50,18 @@ class DBStorage:
         """Display all objects
         """
         all_dict = {}
-        for items in classes:
-            if cls is None:
-                obj = self.__session.query(classes[items]).all()
-                for v in obj:
-                    k = v.__class__.__name__ + '.' + v.id
+        if cls in classes:
+            item = self.__session.query(classes[cls]).all()
+            for obj in item:
+                k = "{}.{}".format(obj.__class__.__name__, obj.id)
+                v = obj
+                all_dict[k] = v
+        elif cls is None:
+            for model in classes:
+                item = self.__session.query(classes[cls]).all()
+                for obj in item:
+                    k = "{}.{}".format(obj.__class__.__name__, obj.id)
+                    v = obj
                     all_dict[k] = v
         return all_dict
 
