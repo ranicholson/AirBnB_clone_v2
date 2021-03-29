@@ -120,25 +120,19 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        arglist = args.split(" ")
-        if arglist[0] not in HBNBCommand.classes:
+        args = args.split()
+        if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        if len(arglist) == 1:
-                new_instance = HBNBCommand.classes[arglist[0]]()
-                storage.new(new_instance)
-                storage.save()
-                print(new_instance.id)
-        else:
-            kwargs = {}
-            new_instance = HBNBCommand.classes[arglist[0]]()
-            for i in arglist[1:]:
-                attr = i.split("=")
-                k = attr[0]
-                v = attr[1].replace('\"', '').replace("_", " ")
-                if "\"" in attr[1]:
-                    pass
-                elif '.' in v:
+        _new = HBNBCommand.classes[args[0]]()
+        for i in range(1, len(args)):
+            attr = args[i].split("=")
+            k = attr[0]
+            v = ""
+            if attr[1][0] == '\"':
+                v = str(attr[1][1:-1].replace('"', '\"').replace("_", " "))
+            else:
+                if '.' in attr[1]:
                     try:
                         v = float(attr[1])
                     except:
@@ -148,11 +142,12 @@ class HBNBCommand(cmd.Cmd):
                         v = int(attr[1])
                     except:
                         pass
-                setattr(new_instance, k, v)
-                kwargs[k] = v
-            storage.new(new_instance)
-            new_instance.save()
-            print(new_instance.id)
+            if v != "":
+                setattr(_new, k, v)
+            else:
+                pass
+        _new.save()
+        print(_new.id)
 
     def help_create(self):
         """ Help information for the create method """
