@@ -3,7 +3,6 @@
 """
 
 
-import models
 from models.base_model import BaseModel, Base
 from models.city import City
 from models.state import State
@@ -17,16 +16,12 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from os import getenv
 
 
-classes = {
-    "Amenity": Amenity,
-    "City": City,
-    "User": User,
-    "State": State,
-    "Place": Place,
-    "Review": Review}
+
 
 
 class DBStorage:
+
+    
 
     """Database Storage
     """
@@ -54,13 +49,20 @@ class DBStorage:
     def all(self, cls=None):
         """Display all objects
         """
+        aclasses = {
+    "Amenity": Amenity,
+    "City": City,
+    "User": User,
+    "State": State,
+    "Place": Place,
+    "Review": Review}
         all_dict = {}
-        for items in classes:
-            if cls is None:
-                obj = self.__session.query(classes[items]).all()
-                for v in obj:
-                    k = v.__class__.__name__ + '.' + v.id
-                    all_dict[k] = v
+        if cls is None:
+            for k, v in aclasses.items():
+                k = v.__class__.__name__ + '.' + v.id
+                all_dict[k] = v
+        else:
+
         return all_dict
 
     def new(self, obj):

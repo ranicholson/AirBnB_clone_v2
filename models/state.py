@@ -10,16 +10,16 @@ from sqlalchemy.orm import relationship
 from os import getenv
 
 
+
 class State(BaseModel, Base):
 
     """ State class """
-    __tablename__ = 'states'
-    if getenv("HBNB_TYPE_STORAGE") == "db":
-        name = Column(String(128), nullable=False)
-        cities = relationship("City", cascade='all, delete', backref="state")
-    else:
-        name = ""
 
+    __tablename__ = 'states'
+    name = Column(String(128), primary_key=True, nullable=False)
+    cities = relationship("City", backref="state")
+
+    if models.hbnb_storage != "db":
         @property
         def cities(self):
             """File storage getter"""

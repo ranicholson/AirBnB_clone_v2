@@ -1,9 +1,10 @@
 #!/usr/bin/python3
+
 """ Console Module """
 import cmd
 import sys
 import models
-from models.__init__ import storage
+from models import storage
 from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
@@ -126,8 +127,7 @@ class HBNBCommand(cmd.Cmd):
             return
         if len(arglist) == 1:
                 new_instance = HBNBCommand.classes[arglist[0]]()
-                storage.new(new_instance)
-                storage.save()
+                BaseModel.save(new_instance)
                 print(new_instance.id)
         else:
             kwargs = {}
@@ -150,8 +150,7 @@ class HBNBCommand(cmd.Cmd):
                         pass
                 setattr(new_instance, k, v)
                 kwargs[k] = v
-            storage.new(new_instance)
-            new_instance.save()
+            BaseModel.save(new_instance)
             print(new_instance.id)
 
     def help_create(self):
