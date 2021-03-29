@@ -15,7 +15,7 @@ class FileStorage:
             return self.__objects
         all_dict = {}
         for k, v in self.__objects.items():
-            if cls == v.__class__:
+            if k.split('.')[0] == cls:
                 all_dict[k] = v
         return all_dict
 
