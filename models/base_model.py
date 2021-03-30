@@ -3,6 +3,7 @@
 import uuid
 import datetime
 import models
+from models import storage
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.ext.declarative import declarative_base
@@ -25,12 +26,17 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
-            self.__dict__.update(kwargs)
+            for k, v in kwargs.items():
+                if "id" not in kwargs:
+                    self.id = str(uuid.uuid4())
+                if k == 'updated_at' or k == 'created_at':
+                    date = datetime.strptime(v, '%Y-%m-%dT%H:%M:%S.%f')
+                    kwargs[k] = date
+                if 'updated_at' not in kwargs.keys():
+                    self.updated_at = datetime.now()
+                if 'created_at' not in kwargs.keys():
+                    self.created_at = datetime.now()
+                self.__dict__.update(kwargs)
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -46,13 +52,13 @@ class BaseModel:
     def to_dict(self):
         """Convert instance into dict format"""
         dictionary = {}
-        if '_sa_instance_state' in self.__dict__.keys():
-            del self.__dict__['_sa_instance_state']
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
+        if '_sa_instance_state' in self.__dict__.keys():
+            del dictionary['_sa_instance_state']
         return dictionary
 
     def delete(self):
