@@ -9,6 +9,7 @@ import os
 
 
 class test_basemodel(unittest.TestCase):
+
     """ """
 
     def __init__(self, *args, **kwargs):
@@ -77,8 +78,8 @@ class test_basemodel(unittest.TestCase):
     def test_kwargs_one(self):
         """ """
         n = {'Name': 'test'}
-        with self.assertRaises(KeyError):
-            new = self.value(**n)
+        test = self.value(**n)
+        self.assertEqual(type(test), self.value)
 
     def test_id(self):
         """ """
