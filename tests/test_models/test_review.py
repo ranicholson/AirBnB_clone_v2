@@ -5,6 +5,7 @@ from models.review import Review
 
 
 class test_review(test_basemodel):
+
     """ """
 
     def __init__(self, *args, **kwargs):
@@ -15,15 +16,18 @@ class test_review(test_basemodel):
 
     def test_place_id(self):
         """ """
-        new = self.value()
+        new = self.value(place_id="456")
         self.assertEqual(type(new.place_id), str)
+        self.assertEqual(new.place_id, "456")
 
     def test_user_id(self):
         """ """
-        new = self.value()
+        new = self.value(user_id="789")
         self.assertEqual(type(new.user_id), str)
+        self.assertEqual(new.user_id, "789")
 
     def test_text(self):
         """ """
-        new = self.value()
+        new = self.value(text="abcdefg")
         self.assertEqual(type(new.text), str)
+        self.assertEqual(new.text, "abcdefg")

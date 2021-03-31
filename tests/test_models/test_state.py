@@ -5,6 +5,7 @@ from models.state import State
 
 
 class test_state(test_basemodel):
+
     """ """
 
     def __init__(self, *args, **kwargs):
@@ -15,5 +16,6 @@ class test_state(test_basemodel):
 
     def test_name3(self):
         """ """
-        new = self.value()
+        new = self.value(name="Oklahoma")
         self.assertEqual(type(new.name), str)
+        self.assertEqual(new.name, "Oklahoma")
