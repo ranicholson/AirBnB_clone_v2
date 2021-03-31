@@ -3,7 +3,6 @@
 import uuid
 import datetime
 import models
-from models import storage
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.ext.declarative import declarative_base
